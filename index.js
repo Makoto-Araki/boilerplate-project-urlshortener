@@ -38,9 +38,17 @@ app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-// Your first API endpoint
-app.get('/api/hello', function(req, res) {
-  res.json({ greeting: 'hello API' });
+// GET - /api/shorturl/:id
+app.get('/api/shorturl/:id', function(req, res) {
+  urlList
+  .find({short: req.params.id})
+  .exec((err, data) => {
+    if (!err) {
+      res.redirect(data[0].long);  // Redirect your request page
+    } else {
+      console.error(err);  // Error Message
+    }
+  });
 });
 
 app.listen(port, function() {
