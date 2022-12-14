@@ -8,4 +8,4 @@ const urlSchema = new Mongoose.Schema({
 });
 
 // Model
-exports.exports = Mongoose.model('urlList', urlSchema);
+module.exports = Mongoose.model('urlList', urlSchema);
