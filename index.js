@@ -44,7 +44,7 @@ app.get('/api/shorturl/:id', function(req, res) {
   .find({short: req.params.id})
   .exec((err, data) => {
     if (!err) {
-      res.redirect(data.long);  // Redirect your request page
+      res.redirect(data[0].long);  // Redirect your request page
     } else {
       console.error(err);  // Error Message
     }
@@ -55,6 +55,7 @@ app.get('/api/shorturl/:id', function(req, res) {
 app.post('/api/shorturl', function(req, res) {
   let longurl = url.parse(req.body.url);
   let invalid = {error: 'invalid url'};
+  let total = 0;
   
   // Developer Code
   // console.log(longurl.protocol);
@@ -71,13 +72,24 @@ app.post('/api/shorturl', function(req, res) {
   });
   
   urlList
+  .find({})
+  .count()
+  .exec((err, count) => {
+    if (!err) {
+      total = count;  // Total number of documents in collection
+    } else {
+      console.error(err);
+    }
+  });
+  
+  urlList
   .find({long: req.body.url})
   .count()
   .exec((err, count) => {
     if (!err) {
       if (count === 0) {
         let newurl = new urlList();
-        newurl.short = count + 1;
+        newurl.short = total + 1;
         newurl.long = req.body.url;
         newurl.save((err, data) => {
           if (!err) {
