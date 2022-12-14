@@ -21,18 +21,18 @@ const database = process.env['database']
 const port = process.env.PORT || 3000;
 app.use(cors());
 app.use('/public', express.static(`${process.cwd()}/public`));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Mongo_URI
 const mongo_URI = `mongodb+srv://${user}:${pass}@${cluster}/${database}?${option1}`;
 
+// MongoDB Connect Config
+mongoose.set('strictQuery', false);
+
 // MongoDB Connect
-mongoose.connect(mongo_URI, option2)
-.then(() => {
-  console.log('Database connection successed')
-})
-.catch(err => {
-  console.error('Database connection failed')
-})
+mongoose.connect(mongo_URI)
+.then(() => console.log('Database connection successed'))
+.catch(err => console.error(err))
 
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
