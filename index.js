@@ -14,7 +14,7 @@ const user = process.env['user']
 const pass = process.env['pass']
 const cluster = process.env['cluster']
 const option1 = process.env['option1']
-const option2 = process.env['option2']
+//const option2 = process.env['option2']
 const database = process.env['database']
 
 // Basic Configuration
